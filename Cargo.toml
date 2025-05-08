@@ -1,0 +1,25 @@
+[workspace]
+members = ["manta-backend-dispatcher", "manta-ws", "ochami-rs"]
+resolver = "2"
+
+[workspace.dependencies]
+manta-backend-dispatcher = { version = "0.1.69" }
+ochami-rs = { version = "0.1.71" }
+mesa =  { version = "0.5.0-beta.1" }
+
+chrono = { version = "0.4.41" }
+futures-io = "0.3.31"
+hostlist-parser = "0.1.6"
+log = "0.4.27"
+regex = "1.11.1"
+reqwest = { version = "0.12.15", default-features = false, features = ["rustls-tls", "json"] }
+rdkafka = { version = "0.37", features = ["cmake-build"] }
+serde_json = "1.0.140"
+serde = { version = "1.0.219" }
+serde_yaml = "0.9.34" # TODO: deprecated, need to replace, potential candidate: yaml-rust2
+strum_macros = "0.27.1"
+strum = { version = "0.27.1", default-features = false }
+thiserror = "2.0.12"
+tokio = { version = "1.45.0" }
+uuid = { version = "1.16.0" }
+

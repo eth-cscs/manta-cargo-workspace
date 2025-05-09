@@ -14,7 +14,7 @@ chrono = { version = "0.4.41" }
 config = { version = "0.15.11", features = ["toml"] } # used to read manta configuration file
 directories = { version = "6.0.0" }
 futures = { version = "0.3.28" }
-futures-io = "0.3.31"
+futures-io = { version = "0.3.31" }
 hostlist-parser = "0.1.6"
 hyper = { version = "1.6.0" }
 k8s-openapi = { version = "0.20.0" }

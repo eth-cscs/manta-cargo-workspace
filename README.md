@@ -25,7 +25,7 @@ external_package = { version = "0.12.13" }
 # to this:
 external_package = { workspace = true }
 ```
-Please note that you don't have to share depdencies between projects in a workspace. If one of the projects in the workspace requires a specific version of one dependency, you can always hard code that version in its Cargo.toml.
+Please note that you don't have to share dependencies between projects in a workspace. If one of the projects in the workspace requires a specific version of one dependency, you can always hard code that version in its Cargo.toml.
 
 Regarding dependencies between workspace packages, the line "workspace=true" will cause the packages to use the LOCAL version of the packages. We use git submodules to enforce specific versions of each repositories that should be checked out .
 

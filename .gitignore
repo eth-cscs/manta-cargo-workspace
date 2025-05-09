@@ -1,7 +1,3 @@
 Cargo.lock
 /.vscode
 target
-manta-backend-dispatcher
-manta-ws
-ochami-rs
-

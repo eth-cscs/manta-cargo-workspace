@@ -1,0 +1,15 @@
+[submodule "ochami-rs"]
+	path = ochami-rs
+	url = git@github.com:OpenCHAMI/ochami-rs.git
+[submodule "csm-rs"]
+	path = csm-rs
+	url = git@github.com:eth-cscs/csm-rs.git
+[submodule "manta-ws"]
+	path = manta-ws
+	url = git@github.com:eth-cscs/manta-ws.git
+[submodule "manta"]
+	path = manta
+	url = git@github.com:eth-cscs/manta.git
+[submodule "manta-backend-dispatcher"]
+	path = manta-backend-dispatcher
+	url = git@github.com:eth-cscs/manta-backend-dispatcher.git

@@ -8,11 +8,12 @@ manta-backend-dispatcher = { path = "manta-backend-dispatcher" }
 ochami-rs = { path = "ochami-rs" }
 #mesa =  { version = "0.5.0-beta.1" }
 csm-rs =  { path = "csm-rs" }
+manta-ws = { path = "manta-ws" }
 
 base64 = { version = "0.22.1" }
 chrono = { version = "0.4.41" }
 config = { version = "0.15.11", features = ["toml"] } # used to read manta configuration file
-directories = { version = "6.0.0" }
+directories = { version = "6.0.0" } # XDG Base Directory Specification
 futures = { version = "0.3.28" }
 futures-io = { version = "0.3.31" }
 hostlist-parser = "0.1.6"
@@ -33,7 +34,11 @@ thiserror = "2.0.12"
 tokio = { version = "1.45.0" }
 tokio-util = { version = "0.7.5" }
 tower = { version = "0.5.2" }
+tracing = { version = "0.1.41" }
+tracing-subscriber = { version = "0.3.19" }
+utoipa = { version = "5.3.1" }
 uuid = { version = "1.16.0" }
+
 
 # Config for 'cargo dist'
 [workspace.metadata.dist]
@@ -49,4 +54,14 @@ ci = ["github"]
 installers = []
 # Whether to consider the binaries in a package for distribution (defaults true)
 dist = true
+
+[profile.dev]
+incremental = true
+
+[profile.release]
+opt-level = 'z'     # Optimize for size
+lto = true          # Enable link-time optimization
+codegen-units = 1   # Reduce number of codegen units to increase optimizations
+panic = 'abort'     # Abort on panic
+strip = true        # Strip symbols from binary*
 

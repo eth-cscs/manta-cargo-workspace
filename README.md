@@ -77,6 +77,9 @@ cd ..
 git add <submodule path>
 git commit -m "Update <submodule> to <git tag>" && git push
 
+# Push changes in a submodule
+git push origin HEAD:<branch name>
+
 # Fetch latest commit for all submodules
 git submodule update --remote
 

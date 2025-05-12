@@ -1,8 +1,8 @@
 [submodule "ochami-rs"]
 	path = ochami-rs
 	url = git@github.com:OpenCHAMI/ochami-rs.git
-[submodule "csm-rs"]
-	path = csm-rs
+[submodule "mesa"]
+	path = mesa
 	url = git@github.com:eth-cscs/csm-rs.git
 [submodule "manta-ws"]
 	path = manta-ws

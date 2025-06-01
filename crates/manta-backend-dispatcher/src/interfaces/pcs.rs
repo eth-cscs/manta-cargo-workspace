@@ -8,21 +8,39 @@ pub trait PCSTrait {
     &self,
     _auth_token: &str,
     _nodes: &[String],
-  ) -> impl std::future::Future<Output = Result<Value, Error>> + Send;
+  ) -> impl std::future::Future<Output = Result<Value, Error>> + Send {
+    async {
+      Err(Error::Message(
+        "Power on command not implemented for this backend".to_string(),
+      ))
+    }
+  }
 
   fn power_off_sync(
     &self,
     _auth_token: &str,
     _nodes: &[String],
     _force: bool,
-  ) -> impl std::future::Future<Output = Result<Value, Error>> + Send;
+  ) -> impl std::future::Future<Output = Result<Value, Error>> + Send {
+    async {
+      Err(Error::Message(
+        "Power off command not implemented for this backend".to_string(),
+      ))
+    }
+  }
 
   fn power_reset_sync(
     &self,
     _auth_token: &str,
     _nodes: &[String],
     _force: bool,
-  ) -> impl std::future::Future<Output = Result<Value, Error>> + Send;
+  ) -> impl std::future::Future<Output = Result<Value, Error>> + Send {
+    async {
+      Err(Error::Message(
+        "Power reset command not implemented for this backend".to_string(),
+      ))
+    }
+  }
 
   // FIXME: Create a new type PowerStatus and return Result<PowerStatus, Error>
   fn power_status(
@@ -32,5 +50,13 @@ pub trait PCSTrait {
     _nodes: &[String],
     _power_status_filter: Option<&str>,
     _management_state_filter: Option<&str>,
-  ) -> impl std::future::Future<Output = Result<PowerStatusAll, Error>> + Send; // TODO: this should return PowerStatusAll instead
+  ) -> impl std::future::Future<Output = Result<PowerStatusAll, Error>> + Send
+  {
+    // TODO: this should return PowerStatusAll instead
+    async {
+      Err(Error::Message(
+        "Power status command not implemented for this backend".to_string(),
+      ))
+    }
+  }
 }

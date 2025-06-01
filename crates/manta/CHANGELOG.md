@@ -2,12 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.54.1-beta.149] - 2025-06-01
+
+### Miscellaneous Tasks
+
+- Migration to monorepo
+
+### Refactor
+
+- Replace argument 'no-dryrun' to 'dry-run' and have all commands following the same behaviour
+
 ## [1.54.1-beta.148] - 2025-05-22
 
 ### Miscellaneous Tasks
 
 - Clean dependencies
 - Update manta dependencies
+- Release manta version 1.54.1-beta.148
 
 ## [1.54.1-beta.147] - 2025-05-22
 
@@ -5146,10 +5157,6 @@ All notable changes to this project will be documented in this file.
 ### Testing
 
 - Testing git2-rs
-- Testing git2-rs... commit created programatically...
-- Testing git2-rs... commit created programatically...
-- Testing git2-rs... commit created programatically...
-- Testing git2-rs... commit created programatically...
 - Testing git2-rs... commit created programatically...
 - Testing git2-rs... commit created programatically...
 - Testing git2-rs... commit created programatically...

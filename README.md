@@ -1,4 +1,16 @@
 # Manta Project
+
+---
+
+## TLDR;
+
+```bash
+# Clone the monorepo
+git clone https://github.com/eth-cscs/manta-project.git
+cd manta-project
+# Clone the submodule ochami-rs
+git submodule update --init --recursive
+```
 ---
 ### About
 This is the monorepo for the "manta" project containing the following crates:

@@ -729,7 +729,7 @@ pub fn subcommand_add_node() -> Command {
     )
 }
 
-pub fn subcommand_add_hwcomponent() -> Command {
+pub fn subcommand_add_hw_component() -> Command {
   Command::new("hardware")
     // .visible_alias("hw")
     .arg_required_else_help(true)
@@ -897,7 +897,7 @@ pub fn subcommand_add() -> Command {
     .about("Add/Create new elements to system.")
     .subcommand(subcommand_add_node())
     .subcommand(subcommand_add_group())
-    .subcommand(subcommand_add_hwcomponent())
+    .subcommand(subcommand_add_hw_component())
     .subcommand(subcommand_add_boot_parameters())
     .subcommand(subcommand_add_kernel_parameters())
     .subcommand(subcommand_add_redfish_endpoint())

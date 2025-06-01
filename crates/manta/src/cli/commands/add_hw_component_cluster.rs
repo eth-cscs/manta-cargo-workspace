@@ -19,7 +19,7 @@ pub async fn exec(
   target_hsm_group_name: &str,
   parent_hsm_group_name: &str,
   pattern: &str,
-  nodryrun: bool,
+  dryrun: bool,
   create_hsm_group: bool,
 ) {
   let pattern = format!("{}:{}", target_hsm_group_name, pattern);
@@ -41,7 +41,10 @@ pub async fn exec(
         Err(_) => {
             if create_hsm_group {
                 log::info!("HSM group {} does not exist, but the option to create the group has been selected, creating it now.", target_hsm_group_name.to_string());
-                if nodryrun {
+                if dryrun {
+                    log::error!("Dryrun selected, cannot create the new group and continue.");
+                    std::process::exit(1);
+                } else {
                     let group = Group {
                         label: target_hsm_group_name.to_string(),
                         description: None,
@@ -51,21 +54,6 @@ pub async fn exec(
                     };
                     backend.add_group(shasta_token, group).await
                     .expect("Unable to create new HSM group");
-                    /* hsm::group::http_client::create_new_hsm_group(
-                        shasta_token,
-                        shasta_base_url,
-                        shasta_root_cert,
-                        target_hsm_group_name,
-                        &[],
-                        "false",
-                        "",
-                        &[],
-                    )
-                    .await
-                    .expect("Unable to create new HSM group"); */
-                } else {
-                    log::error!("Dryrun selected, cannot create the new group and continue.");
-                    std::process::exit(1);
                 }
             } else {
                 log::error!("HSM group {} does not exist, but the option to create the group was NOT specificied, cannot continue.", target_hsm_group_name.to_string());
@@ -321,7 +309,7 @@ pub async fn exec(
 
   // *********************************************************************************************************
   // UPDATE HSM GROUP MEMBERS IN CSM
-  if !nodryrun {
+  if dryrun {
     log::info!("Dryrun enabled, not modifying the HSM groups on the system.")
   } else {
     for xname in nodes_moved_from_parent_hsm {
@@ -342,14 +330,6 @@ pub async fn exec(
         .add_members_to_group(shasta_token, target_hsm_group_name, vec![&xname])
         .await
         .unwrap();
-      /* let _ = hsm::group::http_client::post_member(
-          shasta_token,
-          shasta_base_url,
-          shasta_root_cert,
-          target_hsm_group_name,
-          &xname,
-      )
-      .await; */
     }
   }
   let target_hsm_group_value = serde_json::json!({

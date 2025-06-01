@@ -496,9 +496,7 @@ pub async fn process_cli(
           label,
           description,
           node_expression,
-          // assume_yes,
           true,
-          // dryrun,
           false,
           kafka_audit_opt,
         )
@@ -531,9 +529,7 @@ pub async fn process_cli(
         .await?;
         let _ = cli_add_hw_configuration.get_one::<String>("target-cluster");
 
-        let nodryrun = *cli_add_hw_configuration
-          .get_one::<bool>("no-dryrun")
-          .unwrap_or(&true);
+        let dryrun = cli_add_hw_configuration.get_flag("dry-run");
 
         let create_hsm_group = *cli_add_hw_configuration
           .get_one::<bool>("create-hsm-group")
@@ -547,7 +543,7 @@ pub async fn process_cli(
           cli_add_hw_configuration
             .get_one::<String>("pattern")
             .unwrap(),
-          nodryrun,
+          dryrun,
           create_hsm_group,
         )
         .await;
@@ -1340,9 +1336,7 @@ pub async fn process_cli(
           )
           .await?;
 
-          let nodryrun = *cli_apply_hw_cluster
-            .get_one::<bool>("no-dryrun")
-            .unwrap_or(&true);
+          let dryrun = cli_apply_hw_cluster.get_flag("dry-run");
 
           let create_target_hsm_group = *cli_apply_hw_cluster
             .get_one::<bool>("create-target-hsm-group")
@@ -1363,7 +1357,7 @@ pub async fn process_cli(
               target_hsm_group_vec.first().unwrap(),
               parent_hsm_group_vec.first().unwrap(),
               cli_apply_hw_cluster.get_one::<String>("pattern").unwrap(),
-              nodryrun,
+              dryrun,
               create_target_hsm_group,
               delete_empty_parent_hsm_group,
             )
@@ -1375,7 +1369,7 @@ pub async fn process_cli(
               target_hsm_group_vec.first().unwrap(),
               parent_hsm_group_vec.first().unwrap(),
               cli_apply_hw_cluster.get_one::<String>("pattern").unwrap(),
-              nodryrun,
+              dryrun,
               create_target_hsm_group,
               delete_empty_parent_hsm_group,
             )
@@ -2072,18 +2066,18 @@ pub async fn process_cli(
         backend.delete_node(&shasta_token, id).await?;
 
         println!("Node '{}' deleted", id);
-      } else if let Some(cli_delete_hw_configuration) =
-        cli_delete.subcommand_matches("hardware")
+      } else if let Some(cli_delete_hw_component) =
+        cli_delete.subcommand_matches("component")
       {
         let shasta_token = backend.get_api_token(&site_name).await?;
 
-        let nodryrun = cli_delete_hw_configuration.get_flag("no-dryrun");
+        let dryrun = cli_delete_hw_component.get_flag("dry-run");
 
         let delete_hsm_group =
-          cli_delete_hw_configuration.get_flag("delete-hsm-group");
+          cli_delete_hw_component.get_flag("delete-hsm-group");
 
         let target_hsm_group_name_arg_opt =
-          cli_delete_hw_configuration.get_one::<String>("target-cluster");
+          cli_delete_hw_component.get_one::<String>("target-cluster");
 
         let target_hsm_group_vec = get_groups_available(
           &backend,
@@ -2097,7 +2091,7 @@ pub async fn process_cli(
         //     cli_remove_hw_configuration.get_one::<String>("PARENT_CLUSTER_NAME");
 
         let parent_hsm_group_name_arg_opt =
-          cli_delete_hw_configuration.get_one::<String>("parent-cluster");
+          cli_delete_hw_component.get_one::<String>("parent-cluster");
 
         let parent_hsm_group_vec = get_groups_available(
           &backend,
@@ -2112,10 +2106,10 @@ pub async fn process_cli(
           &shasta_token,
           target_hsm_group_vec.first().unwrap(),
           parent_hsm_group_vec.first().unwrap(),
-          cli_delete_hw_configuration
+          cli_delete_hw_component
             .get_one::<String>("pattern")
             .unwrap(),
-          nodryrun,
+          dryrun,
           delete_hsm_group,
         )
         .await;
@@ -2415,9 +2409,7 @@ pub async fn process_cli(
     {
       let shasta_token = backend.get_api_token(&site_name).await?;
 
-      let dryrun = *cli_add_nodes
-        .get_one::<bool>("dry-run")
-        .expect("'dry-run' argument must be provided");
+      let dryrun = cli_add_nodes.get_flag("dry-run");
 
       let hosts_expression = cli_add_nodes.get_one::<String>("nodes").unwrap();
 
@@ -2439,9 +2431,7 @@ pub async fn process_cli(
     {
       let shasta_token = backend.get_api_token(&site_name).await?;
 
-      let dryrun = *cli_remove_nodes
-        .get_one::<bool>("dry-run")
-        .expect("'dry-run' argument must be provided");
+      let dryrun = cli_remove_nodes.get_flag("dry-run");
 
       let nodes = cli_remove_nodes.get_one::<String>("nodes").unwrap();
 

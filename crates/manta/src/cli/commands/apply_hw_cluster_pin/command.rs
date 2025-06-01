@@ -11,45 +11,13 @@ use manta_backend_dispatcher::{
   interfaces::hsm::group::GroupTrait, types::Group,
 };
 
-/* pub async fn exec(
-    backend: StaticBackendDispatcher,
-    shasta_token: &str,
-    shasta_base_url: &str,
-    shasta_root_cert: &[u8],
-    target_hsm_group_name: &str,
-    parent_hsm_group_name: &str,
-    pattern: &str,
-    nodryrun: bool,
-    create_target_hsm_group: bool,
-    delete_empty_parent_hsm_group: bool,
-) {
-    let apply_hw_cluster_pin_rslt = backend
-        .apply_hw_cluster_pin(
-            shasta_token,
-            shasta_base_url,
-            shasta_root_cert,
-            target_hsm_group_name,
-            parent_hsm_group_name,
-            pattern,
-            nodryrun,
-            create_target_hsm_group,
-            delete_empty_parent_hsm_group,
-        )
-        .await;
-
-    apply_hw_cluster_pin_rslt.unwrap_or_else(|e| {
-        eprintln!("ERROR - Could not apply hardware cluster pin. Reason:\n{e}\nExit");
-        std::process::exit(1);
-    });
-} */
-
 pub async fn exec(
   backend: &StaticBackendDispatcher,
   shasta_token: &str,
   target_hsm_group_name: &str,
   parent_hsm_group_name: &str,
   pattern: &str,
-  nodryrun: bool,
+  dryrun: bool,
   create_target_hsm_group: bool,
   delete_empty_parent_hsm_group: bool,
 ) {
@@ -124,7 +92,10 @@ pub async fn exec(
         Err(_) => {
             if create_target_hsm_group {
                 log::info!("Target HSM group '{}' does not exist, but the option to create the group has been selected, creating it now.", target_hsm_group_name.to_string());
-                if nodryrun {
+                if dryrun {
+                    log::error!("Dryrun selected, cannot create the new group and continue.");
+                    std::process::exit(1);
+                } else {
                     let group = Group{
                         label: target_hsm_group_name.to_string(),
                         description: None,
@@ -136,21 +107,6 @@ pub async fn exec(
                     let _ = backend.add_group(shasta_token, group)
                         .await
                         .expect("Unable to create new target HSM group");
-                    /* hsm::group::http_client::create_new_hsm_group(
-                        shasta_token,
-                        shasta_base_url,
-                        shasta_root_cert,
-                        target_hsm_group_name,
-                        &[],
-                        "false",
-                        "",
-                        &[],
-                    )
-                    .await
-                    .expect("Unable to create new target HSM group"); */
-                } else {
-                    log::error!("Dryrun selected, cannot create the new group and continue.");
-                    std::process::exit(1);
                 }
             } else {
                 log::error!("Target HSM group '{}' does not exist, but the option to create the group was NOT specificied, cannot continue.", target_hsm_group_name.to_string());
@@ -316,7 +272,7 @@ pub async fn exec(
     "Updating target HSM group '{}' members",
     target_hsm_group_name
   );
-  if !nodryrun {
+  if dryrun {
     log::info!("Dry run enabled, not modifying the HSM groups on the system.");
   } else {
     // The target HSM group will never be empty, the way the pattern works it'll always
@@ -329,15 +285,6 @@ pub async fn exec(
         &target_hsm_node_vec,
       )
       .await;
-    /* let _ = hsm::group::utils::update_hsm_group_members(
-        shasta_token,
-        shasta_base_url,
-        shasta_root_cert,
-        target_hsm_group_name,
-        &target_hsm_group_member_vec,
-        &target_hsm_node_vec,
-    )
-    .await; */
   }
 
   // *********************************************************************************************************
@@ -346,7 +293,7 @@ pub async fn exec(
     "Updating parent HSM group '{}' members",
     parent_hsm_group_name
   );
-  if !nodryrun {
+  if dryrun {
     log::info!("Dry run enabled, not modifying the HSM groups on the system.");
   } else {
     // The parent group might be out of resources after applying this, so it's safe to check
@@ -361,15 +308,6 @@ pub async fn exec(
         &parent_hsm_node_vec,
       )
       .await;
-    /* let _ = hsm::group::utils::update_hsm_group_members(
-        shasta_token,
-        shasta_base_url,
-        shasta_root_cert,
-        parent_hsm_group_name,
-        &parent_hsm_group_member_vec,
-        &parent_hsm_node_vec,
-    )
-    .await; */
     if parent_group_will_be_empty {
       if delete_empty_parent_hsm_group {
         log::info!("Parent HSM group '{}' is now empty and the option to delete empty groups has been selected, removing it.",parent_hsm_group_name);
